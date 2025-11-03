@@ -1,78 +1,70 @@
-# COMP-3018 – Pre-Milestone Project Planning
+## COMP-3018 – Pre-Milestone Project Planning
 
-**Name:** Harsh Pandya  
-**Course:** Back-End Development  
-**Date:** November 3, 2025  
-
----
+Name: Harsh Pandya
+Course: Back-End Development
+Date: November 3, 2025 
 
 ## 1. Project Concept
 
-**Project Title:** High-Risk Loan Management API  
+Project Title: Financial Loan Management API
 
-This project is about building an API for a financial company to manage client loans. Staff can add, update, view, or delete loan and client records. The system will also check which loans are high-risk based on the amount or other limits.  
-The goal is to make it easier to handle client loans, reduce manual errors, and protect data with authentication.  
+For my project, I plan to build a back-end system that helps a financial company manage client loans. Staff will be able to add, update, delete, and view loan and client details. The system will also check which loans are high-risk based on the amount or certain limits.
 
-This project fits the course because it uses Node.js, Express, TypeScript, Firestore, and Firebase Auth to build a secure backend system.
+The goal is to make loan management easier and more secure while reducing human mistakes. It will also include login protection so only authorized users can access or change information.
 
----
+This project connects well with the course because it uses Node.js, Express, TypeScript, Firebase Auth, and Firestore — all tools we’ve learned in class.
 
 ## 2. Scope and Functionality
+Main Resources
 
-### Main Resources
-- **User:** login info and roles (admin, manager, officer)  
-- **Client:** personal and contact details  
-- **Loan:** loan amount, date, and risk level  
+# User: login info and role (admin, manager, staff)
+# Client: name, contact info, and details
+# Loan: amount, date, and risk status 
 
-### Example Endpoints
-| Resource | Endpoint | Method | Description |
-|-----------|-----------|---------|--------------|
-| Loan | `/loans` | GET | Get all loans |
-| Loan | `/loans` | POST | Add a loan |
-| Loan | `/loans/:id` | PUT | Update a loan |
-| Loan | `/loans/:id` | DELETE | Delete a loan (admin only) |
-| Client | `/clients` | GET | Get all clients |
-| Client | `/clients` | POST | Add a client |
+# Example Endpoints
+Resource	Endpoint	Method	Description
+Loan	/loans	GET	Get all loans
+Loan	/loans	POST	Add a new loan
+Loan	/loans/:id	PUT	Update loan details
+Loan	/loans/:id	DELETE	Delete a loan (admin only)
+Client	/clients	GET	Get all clients
+Client	/clients	POST	Add a new client
 
-### Features
-- CRUD operations for users, clients, and loans  
-- Authentication and role-based access  
-- Firestore database  
-- High-risk loan detection  
-- Jest tests  
-- Swagger documentation  
-- Error handling middleware  
+# Planned Features
 
----
+-  CRUD functions for clients and loans 
+-  Authentication and role-based access 
+-  Firestore database for storing data
+-  High-risk loan detection 
+-  Central error handling 
+-  Jest testing 
+-  Swagger API documentation
 
 ## 3. Course Content Alignment
 
-| Course Topic | How It’s Used |
-|---------------|---------------|
-| Node.js + Express | For API routes |
-| TypeScript | For clean and safe code |
-| Firestore | For storing data |
-| Firebase Auth | For user login |
-| Jest | For testing |
-| Swagger | For documentation |
-| Error Middleware | Custom feature for handling errors |
+Course Topic	Project Use
 
----
-
+- Node.js + Express	- Used to build all API routes
+- TypeScript - Helps write clean and safe code
+- Firestore	Stores -  client and loan data
+- Firebase Auth	- Handles user login and roles
+- Jest - For testing routes and logic
+- Swagger - For documenting the API
+- Error Middleware - Handles system and user errors
+  
 ## 4. GitHub Project Setup
 
-- Repo Name: `3018-Assignment-04-High-Risk-Loan`  
-- Branches: `main`, `development`, `feature/*`  
-- Project Board: Backlog, In Progress, Review, Done  
-- Each issue includes a short task and checklist  
-- Use pull requests from feature branches into development  
+- Repository: 3018-Project
+- Branches: main, development, feature/*
+- Project Board: Columns for Backlog, In Progress, Review, and Done
+- Each task will have a GitHub issue with a checklist
+- Pull requests will merge feature branches into 'development'
 
----
 
-###  Summary
-This API will help manage loans and clients safely. It will include CRUD features, authentication, and testing. The plan follows the COMP-3018 project setup rules and is ready for development.
 
----
+## Summary
 
-**Submitted by:** Harsh Pandya  
-**Date:** November 3, 2025
+- This project will create a secure and organized back-end system for managing client loans. It will include authentication, role control, and full CRUD features. The plan follows course requirements and is ready to move into Milestone 1.
+
+## Submitted by: Harsh Pandya
+## Date: November 3, 2025
