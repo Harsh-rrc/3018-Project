@@ -11,16 +11,32 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
-        "express": "^5.1.0"
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^5.1.0",
+        "firebase": "^12.5.0",
+        "firebase-admin": "^13.6.0",
+        "firebase-auth": "^0.1.2",
+        "helmet": "^8.1.0",
+        "joi": "^18.0.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.1"
     },
     "devDependencies": {
-        "@types/express": "^5.0.2",
-        "@types/node": "^22.15.24",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.5",
+        "@types/helmet": "^0.0.48",
+        "@types/jest": "^29.5.14",
+        "@types/node": "^22.19.0",
+        "@types/supertest": "^6.0.3",
+        "@typescript-eslint/eslint-plugin": "^8.46.3",
+        "@typescript-eslint/parser": "^8.46.3",
+        "eslint": "^9.39.1",
+        "jest": "^30.2.0",
+        "supertest": "^7.1.4",
+        "ts-jest": "^29.4.5",
         "ts-node": "^10.9.2",
-        "typescript": "^5.8.3",
-        "jest": "^30.0.0",
-        "ts-jest": "^29.2.5",
-        "@types/jest": "^29.5.14"
+        "typescript": "^5.9.3"
     },
     "jest": {
         "preset": "ts-jest",
@@ -34,5 +50,17 @@
         "transform": {
             "^.+\\.ts$": "ts-jest"
         }
-    }
+    },
+    "directories": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Harsh-rrc/3018-Project.git"
+    },
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/Harsh-rrc/3018-Project/issues"
+    },
+    "homepage": "https://github.com/Harsh-rrc/3018-Project#readme"
 }
