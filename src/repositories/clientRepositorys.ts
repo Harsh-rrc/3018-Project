@@ -1,5 +1,5 @@
 import { db } from '../config/firebase';
-import { Client } from '../models/client';
+import { Client } from '../models/clientModels';
 
 export class ClientRepository {
   private readonly collection = db.collection('clients');
