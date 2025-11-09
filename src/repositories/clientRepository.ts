@@ -50,4 +50,11 @@ export class ClientRepository {
     await this.collection.doc(id).delete();
     return true;
   }
+
+  async findByEmail(email: string): Promise<Client | null> {
+  const snapshot = await this.collection.where('email', '==', email).limit(1).get();
+  if (snapshot.empty) return null;
+  const doc = snapshot.docs[0];
+  return { id: doc.id, ...doc.data() } as Client;
+}
 }
