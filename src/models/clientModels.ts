@@ -14,15 +14,3 @@ export interface Client {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export interface Loan {
-  id: string;
-  clientId: string;
-  amount: number;
-  interestRate: number;
-  term: number; // in months
-  status: 'pending' | 'approved' | 'rejected' | 'active' | 'completed';
-  riskStatus: 'low' | 'medium' | 'high';
-  createdAt: Date;
-  updatedAt: Date;
-}
