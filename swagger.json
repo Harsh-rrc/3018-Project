@@ -1,0 +1,708 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Financial Loan Management API",
+    "version": "1.0.0",
+    "description": "API for managing clients and loans in a financial system"
+  },
+  "components": {
+    "schemas": {
+      "Client": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "phone",
+          "address"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the client"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 15,
+            "example": "+1234567890"
+          },
+          "address": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200,
+            "example": "123 Main St, City, Country"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Loan": {
+        "type": "object",
+        "required": [
+          "clientId",
+          "amount",
+          "interestRate",
+          "term",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the loan"
+          },
+          "clientId": {
+            "type": "string",
+            "example": "client123"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1000000,
+            "example": 50000
+          },
+          "interestRate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 5.5
+          },
+          "term": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 360,
+            "example": 60
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected",
+              "active",
+              "completed"
+            ],
+            "example": "pending"
+          },
+          "riskStatus": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "example": "low"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Invalid input data"
+          }
+        }
+      }
+    }
+  },
+  "apis": [
+    "src/routes/clientRoutes.ts",
+    "src/routes/loanRoutes.ts"
+  ],
+  "paths": {
+    "/api/clients": {
+      "get": {
+        "summary": "Retrieve a list of clients with optional filtering",
+        "tags": [
+          "Clients"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "description": "Maximum number of clients to return"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter clients by name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved clients",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clients": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Client"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new client",
+        "tags": [
+          "Clients"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone",
+                  "address"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 100,
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 15,
+                    "example": "+1234567890"
+                  },
+                  "address": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 200,
+                    "example": "123 Main St, City, Country"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Client created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Client with this email already exists"
+          }
+        }
+      }
+    },
+    "/api/clients/{id}": {
+      "get": {
+        "summary": "Get a client by ID",
+        "tags": [
+          "Clients"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the client"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Client retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a client by ID",
+        "tags": [
+          "Clients"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the client"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 100,
+                    "example": "Jane Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "jane@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 15,
+                    "example": "+0987654321"
+                  },
+                  "address": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 200,
+                    "example": "456 Elm St, City, Country"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Client updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a client by ID",
+        "tags": [
+          "Clients"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the client"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Client deleted successfully"
+          },
+          "404": {
+            "description": "Client not found"
+          }
+        }
+      }
+    },
+    "/api/loans": {
+      "get": {
+        "summary": "Retrieve a list of loans with optional filtering",
+        "tags": [
+          "Loans"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "description": "Maximum number of loans to return"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "approved",
+                "rejected",
+                "active",
+                "completed"
+              ]
+            },
+            "description": "Filter loans by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved loans",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "loans": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Loan"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new loan",
+        "tags": [
+          "Loans"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "clientId",
+                  "amount",
+                  "interestRate",
+                  "term"
+                ],
+                "properties": {
+                  "clientId": {
+                    "type": "string",
+                    "example": "client123"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1000000,
+                    "example": 50000
+                  },
+                  "interestRate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "example": 5.5
+                  },
+                  "term": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 360,
+                    "example": 60
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "approved",
+                      "rejected",
+                      "active",
+                      "completed"
+                    ],
+                    "default": "pending",
+                    "example": "pending"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Loan created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Loan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client not found"
+          }
+        }
+      }
+    },
+    "/api/loans/{id}": {
+      "get": {
+        "summary": "Get a loan by ID",
+        "tags": [
+          "Loans"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the loan"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Loan retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Loan"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Loan not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a loan by ID",
+        "tags": [
+          "Loans"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the loan"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1000000,
+                    "example": 60000
+                  },
+                  "interestRate": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "example": 6
+                  },
+                  "term": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 360,
+                    "example": 72
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "approved",
+                      "rejected",
+                      "active",
+                      "completed"
+                    ],
+                    "example": "approved"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Loan updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Loan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Loan not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a loan by ID",
+        "tags": [
+          "Loans"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the loan"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Loan deleted successfully"
+          },
+          "404": {
+            "description": "Loan not found"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

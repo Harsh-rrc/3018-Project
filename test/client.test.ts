@@ -1,0 +1,45 @@
+import request from 'supertest';
+import app from '../src/app';
+
+describe('Client API', () => {
+  let createdClientId: string;
+
+  it('should create a new client', async () => {
+    const response = await request(app)
+      .post('/api/clients')
+      .send({
+        name: 'John Doe',
+        email: 'john@example.com',
+        phone: '1234567890',
+        address: '123 Main St'
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.name).toBe('John Doe');
+    createdClientId = response.body.id;
+  });
+
+  it('should get all clients', async () => {
+    const response = await request(app).get('/api/clients');
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+  });
+
+  it('should get a client by ID', async () => {
+    const response = await request(app).get(`/api/clients/${createdClientId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(createdClientId);
+  });
+
+  it('should update a client', async () => {
+    const response = await request(app)
+      .put(`/api/clients/${createdClientId}`)
+      .send({ address: '456 New Ave' });
+    expect(response.status).toBe(200);
+    expect(response.body.address).toBe('456 New Ave');
+  });
+
+  it('should delete a client', async () => {
+    const response = await request(app).delete(`/api/clients/${createdClientId}`);
+    expect(response.status).toBe(204);
+  });
+});

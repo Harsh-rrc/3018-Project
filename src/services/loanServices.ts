@@ -1,65 +1,34 @@
-import { LoanRepository } from '../repositories/LoanRepositorys';
-import { Loan, LoanStatus } from '../models/loanModels';
+import { LoanRepository } from '../repositories/LoanRepository';
+import { Loan } from '../models/loanModel';
 
 export class LoanService {
-  private loanRepository: LoanRepository;
+  private repo = new LoanRepository();
 
-  constructor() {
-    this.loanRepository = new LoanRepository();
-  }
-
-  // Simple risk assessment based on amount
   private assessRisk(amount: number): 'low' | 'medium' | 'high' {
     if (amount <= 10000) return 'low';
     if (amount <= 50000) return 'medium';
     return 'high';
   }
 
-  // Create a loan with risk assessment and default status
-  async createLoan(
-    loanData: Omit<Loan, 'id' | 'createdAt' | 'updatedAt' | 'riskStatus' | 'status'>
-  ): Promise<Loan> {
-    const riskStatus = this.assessRisk(loanData.amount);
-    const loanWithRisk: Loan = {
-      ...loanData,
-      riskStatus,
-      status: 'pending' as LoanStatus,
-    };
-
-    return await this.loanRepository.create(loanWithRisk);
-  }
-
-  // Get all loans
   async getAllLoans(): Promise<Loan[]> {
-    return await this.loanRepository.findAll();
+    return this.repo.findAll();
   }
 
-  // Get loan by ID
   async getLoanById(id: string): Promise<Loan | null> {
-    return await this.loanRepository.findById(id);
+    return this.repo.findById(id);
   }
 
-  // Get loans by client ID
-  async getLoansByClientId(clientId: string): Promise<Loan[]> {
-    return await this.loanRepository.findByClientId(clientId);
+  async createLoan(data: Omit<Loan, 'id' | 'riskStatus' | 'createdAt' | 'updatedAt'>): Promise<Loan> {
+    const riskStatus = this.assessRisk(data.amount);
+    return this.repo.create({ ...data, riskStatus } as Loan);
   }
 
-  // Update loan and re-assess risk if amount changes
-  async updateLoan(id: string, loanData: Partial<Loan>): Promise<Loan | null> {
-    if (loanData.amount) {
-      loanData.riskStatus = this.assessRisk(loanData.amount);
-    }
-    return await this.loanRepository.update(id, loanData);
+  async updateLoan(id: string, data: Partial<Loan>): Promise<Loan | null> {
+    if (data.amount) data.riskStatus = this.assessRisk(data.amount);
+    return this.repo.update(id, data);
   }
 
-  // Delete loan
   async deleteLoan(id: string): Promise<boolean> {
-    return await this.loanRepository.delete(id);
-  }
-
-  // Optional helper: get only high-risk loans
-  async getHighRiskLoans(): Promise<Loan[]> {
-    const allLoans = await this.loanRepository.findAll();
-    return allLoans.filter(loan => loan.riskStatus === 'high');
+    return this.repo.delete(id);
   }
 }

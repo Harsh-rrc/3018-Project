@@ -1,0 +1,124 @@
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { Express } from 'express';
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Financial Loan Management API',
+      version: '1.0.0'
+    },
+    components: {
+      schemas: {
+        Client: {
+          type: 'object',
+          required: ['name', 'email', 'phone', 'address'],
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for the client'
+            },
+            name: {
+              type: 'string',
+              minLength: 2,
+              maxLength: 100,
+              example: 'John Doe'
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'john@example.com'
+            },
+            phone: {
+              type: 'string',
+              minLength: 10,
+              maxLength: 15,
+              example: '+1234567890'
+            },
+            address: {
+              type: 'string',
+              minLength: 5,
+              maxLength: 200,
+              example: '123 Main St, City, Country'
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time'
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time'
+            }
+          }
+        },
+        Loan: {
+          type: 'object',
+          required: ['clientId', 'amount', 'interestRate', 'term', 'status'],
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for the loan'
+            },
+            clientId: {
+              type: 'string',
+              example: 'client123'
+            },
+            amount: {
+              type: 'number',
+              minimum: 0,
+              maximum: 1000000,
+              example: 50000
+            },
+            interestRate: {
+              type: 'number',
+              minimum: 0,
+              maximum: 100,
+              example: 5.5
+            },
+            term: {
+              type: 'integer',
+              minimum: 1,
+              maximum: 360,
+              example: 60
+            },
+            status: {
+              type: 'string',
+              enum: ['pending', 'approved', 'rejected', 'active', 'completed'],
+              example: 'pending'
+            },
+            riskStatus: {
+              type: 'string',
+              enum: ['low', 'medium', 'high'],
+              example: 'low'
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time'
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time'
+            }
+          }
+        },
+        Error: {
+          type: 'object',
+          properties: {
+            error: {
+              type: 'string',
+              example: 'Invalid input data'
+            }
+          }
+        }
+      }
+    }
+  },
+  apis: ['./src/routes/*.ts']
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+export function setupSwagger(app: Express) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}

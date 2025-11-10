@@ -1,12 +1,35 @@
-import app from './app';
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import clientRoutes from './routes/clientRoutes';
+import loanRoutes from './routes/loanRoutes';
+import errorHandler from './middleware/errorHandler';
+import { setupSwagger } from './docs/swagger';
 
-export const greet = (name: string): string => {
-  return `Hello, ${name}`;
-};
+// Create Express app
+const app = express();
+app.use(express.json());
+app.use(cors());
 
-export const add = (a: number, b: number): number => {
-  return a + b;
-};
+// --- Swagger Setup ---
+setupSwagger(app);
 
+// --- Routes ---
+app.use('/api/clients', clientRoutes);
+app.use('/api/loans', loanRoutes);
+
+// --- Root Route ---
+app.get('/', (req: Request, res: Response) => {
+  res.send('Financial Loan Management API is running...');
+});
+
+// --- Error Handler ---
+app.use(errorHandler);
+
+// --- Server Listen ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+app.listen(PORT, () => {
+  console.log(` Server running on http://localhost:${PORT}`);
+  console.log(` Swagger docs: http://localhost:${PORT}/api-docs`);
+});
+
+export default app;
