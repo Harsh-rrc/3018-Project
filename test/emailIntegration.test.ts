@@ -57,8 +57,8 @@ describe('Email Integration', () => {
       .put(`/api/loans/${loanId}`)
       .send({ status: 'approved' });
 
-    // Check if email was sent
-    expect(mockSendEmail).toHaveBeenCalledWith(
+    // Check if email was sent (should be the 2nd call: 1 for client creation, 2 for update to approved)
+    expect(mockSendEmail).toHaveBeenNthCalledWith(2,
       'test@example.com',
       'Loan Approved',
       'Your loan has been approved.'
@@ -96,8 +96,8 @@ describe('Email Integration', () => {
       .put(`/api/loans/${loanId}`)
       .send({ status: 'rejected' });
 
-    // Check if email was sent
-    expect(mockSendEmail).toHaveBeenCalledWith(
+    // Check if email was sent (should be the 3rd call: 1 for client creation, 2 for loan creation if approved, 3 for update)
+    expect(mockSendEmail).toHaveBeenNthCalledWith(3,
       'test@example.com',
       'Loan Rejected',
       'We regret to inform you that your loan application has been rejected.'

@@ -34,15 +34,18 @@ export class LoanService {
   }
 
   async updateLoan(id: string, data: Partial<Loan>): Promise<Loan | null> {
+    const existingLoan = await this.repo.findById(id);
+    if (!existingLoan) return null;
+
     if (data.amount) data.riskStatus = this.assessRisk(data.amount);
     const loan = await this.repo.update(id, data);
-    if (loan && data.status === 'approved' && loan.status !== 'approved') {
+    if (loan && data.status === 'approved' && existingLoan.status !== 'approved') {
       const client = await this.clientService.getClientById(loan.clientId);
       if (client) {
         await sendEmail(client.email, 'Loan Approved', 'Your loan has been approved.');
       }
     }
-    if (loan && data.status === 'rejected' && loan.status !== 'rejected') {
+    if (loan && data.status === 'rejected' && existingLoan.status !== 'rejected') {
       const client = await this.clientService.getClientById(loan.clientId);
       if (client) {
         await sendEmail(client.email, 'Loan Rejected', 'We regret to inform you that your loan application has been rejected.');

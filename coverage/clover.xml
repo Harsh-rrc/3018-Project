@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1763289446970" clover="3.2.0">
-  <project timestamp="1763289446971" name="All files">
-    <metrics statements="178" coveredstatements="148" conditionals="57" coveredconditionals="27" methods="65" coveredmethods="52" elements="300" coveredelements="227" complexity="0" loc="178" ncloc="178" packages="8" files="14" classes="14"/>
+<coverage generated="1763290755686" clover="3.2.0">
+  <project timestamp="1763290755687" name="All files">
+    <metrics statements="187" coveredstatements="159" conditionals="66" coveredconditionals="35" methods="65" coveredmethods="53" elements="318" coveredelements="247" complexity="0" loc="187" ncloc="187" packages="8" files="14" classes="14"/>
     <package name="src">
       <metrics statements="21" coveredstatements="20" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
       <file name="app.ts" path="C:\Users\harsh\OneDrive - Red River College Polytech\TERM-3\COMP-3018\3018-Project-milestone\src\app.ts">
@@ -58,8 +58,8 @@
         <line num="16" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="17" count="1" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="23" count="3" type="stmt"/>
-        <line num="24" count="3" type="stmt"/>
+        <line num="23" count="5" type="stmt"/>
+        <line num="24" count="5" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
         <line num="29" count="1" type="stmt"/>
         <line num="31" count="1" type="cond" truecount="1" falsecount="1"/>
@@ -82,12 +82,12 @@
         <line num="16" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="17" count="1" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="31" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="32" count="1" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="31" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="3" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
         <line num="40" count="1" type="cond" truecount="1" falsecount="1"/>
@@ -107,42 +107,42 @@
         <metrics statements="7" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="2" coveredmethods="2"/>
         <line num="4" count="3" type="stmt"/>
         <line num="5" count="12" type="stmt"/>
-        <line num="6" count="7" type="stmt"/>
-        <line num="7" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="12" type="stmt"/>
+        <line num="7" count="12" type="cond" truecount="1" falsecount="1"/>
         <line num="8" count="0" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
-        <line num="11" count="7" type="stmt"/>
+        <line num="11" count="12" type="stmt"/>
       </file>
     </package>
     <package name="src.repositories">
-      <metrics statements="30" coveredstatements="30" conditionals="12" coveredconditionals="7" methods="16" coveredmethods="16"/>
+      <metrics statements="30" coveredstatements="30" conditionals="12" coveredconditionals="6" methods="16" coveredmethods="16"/>
       <file name="LoanRepository.ts" path="C:\Users\harsh\OneDrive - Red River College Polytech\TERM-3\COMP-3018\3018-Project-milestone\src\repositories\LoanRepository.ts">
         <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="3" methods="8" coveredmethods="8"/>
         <line num="3" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="11" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="22" count="2" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
-        <line num="28" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
+        <line num="11" count="9" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
         <line num="34" count="1" type="stmt"/>
         <line num="35" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="36" count="1" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
       </file>
       <file name="clientRepository.ts" path="C:\Users\harsh\OneDrive - Red River College Polytech\TERM-3\COMP-3018\3018-Project-milestone\src\repositories\clientRepository.ts">
-        <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="4" methods="8" coveredmethods="8"/>
+        <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="3" methods="8" coveredmethods="8"/>
         <line num="3" count="3" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="11" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="15" count="3" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="22" count="3" type="stmt"/>
+        <line num="11" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
         <line num="27" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="28" count="1" type="stmt"/>
@@ -185,61 +185,70 @@
       </file>
     </package>
     <package name="src.services">
-      <metrics statements="34" coveredstatements="30" conditionals="17" coveredconditionals="11" methods="13" coveredmethods="13"/>
+      <metrics statements="43" coveredstatements="34" conditionals="26" coveredconditionals="16" methods="13" coveredmethods="13"/>
       <file name="clientService.ts" path="C:\Users\harsh\OneDrive - Red River College Polytech\TERM-3\COMP-3018\3018-Project-milestone\src\services\clientService.ts">
-        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
         <line num="1" count="3" type="stmt"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="5" count="6" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="12" count="2" type="stmt"/>
-        <line num="16" count="3" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
+        <line num="3" count="3" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="17" count="5" type="stmt"/>
+        <line num="18" count="5" type="stmt"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
       </file>
       <file name="loanServices.ts" path="C:\Users\harsh\OneDrive - Red River College Polytech\TERM-3\COMP-3018\3018-Project-milestone\src\services\loanServices.ts">
-        <metrics statements="26" coveredstatements="22" conditionals="17" coveredconditionals="11" methods="7" coveredmethods="7"/>
+        <metrics statements="32" coveredstatements="23" conditionals="26" coveredconditionals="16" methods="7" coveredmethods="7"/>
         <line num="1" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
         <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
-        <line num="11" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="13" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="27" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="29" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="33" count="2" type="stmt"/>
-        <line num="37" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="38" count="1" type="stmt"/>
-        <line num="39" count="1" type="cond" truecount="3" falsecount="2"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="41" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
+        <line num="33" count="3" type="stmt"/>
+        <line num="37" count="3" type="stmt"/>
+        <line num="38" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="40" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="42" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="48" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.utils">
-      <metrics statements="13" coveredstatements="2" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <metrics statements="13" coveredstatements="9" conditionals="8" coveredconditionals="4" methods="1" coveredmethods="1"/>
       <file name="emailService.ts" path="C:\Users\harsh\OneDrive - Red River College Polytech\TERM-3\COMP-3018\3018-Project-milestone\src\utils\emailService.ts">
-        <metrics statements="13" coveredstatements="2" conditionals="8" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="13" coveredstatements="9" conditionals="8" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="6" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="9" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="2" type="cond" truecount="2" falsecount="2"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
