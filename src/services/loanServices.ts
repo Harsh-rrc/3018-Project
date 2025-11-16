@@ -42,6 +42,12 @@ export class LoanService {
         await sendEmail(client.email, 'Loan Approved', 'Your loan has been approved.');
       }
     }
+    if (loan && data.status === 'rejected' && loan.status !== 'rejected') {
+      const client = await this.clientService.getClientById(loan.clientId);
+      if (client) {
+        await sendEmail(client.email, 'Loan Rejected', 'We regret to inform you that your loan application has been rejected.');
+      }
+    }
     return loan;
   }
 
