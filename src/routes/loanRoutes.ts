@@ -92,7 +92,7 @@ router.get('/:id', loanController.getLoanById);
  *               - clientId
  *               - amount
  *               - interestRate
- *               - term
+ *               - duration
  *             properties:
  *               clientId:
  *                 type: string
@@ -107,7 +107,7 @@ router.get('/:id', loanController.getLoanById);
  *                 minimum: 0
  *                 maximum: 100
  *                 example: 5.5
- *               term:
+ *               duration:
  *                 type: integer
  *                 minimum: 1
  *                 maximum: 360
@@ -165,7 +165,7 @@ router.post('/', validateRequest(createLoanSchema), loanController.createLoan);
  *                 minimum: 0
  *                 maximum: 100
  *                 example: 6.0
- *               term:
+ *               duration:
  *                 type: integer
  *                 minimum: 1
  *                 maximum: 360
