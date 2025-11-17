@@ -3,7 +3,7 @@ import { Client } from '../models/clientModel';
 import { sendEmail } from '../utils/emailService';
 
 export class ClientService {
-  private repo = new ClientRepository();
+  private repo = ClientRepository.getInstance();
 
   async getAllClients(): Promise<Client[]> {
     return this.repo.findAll();

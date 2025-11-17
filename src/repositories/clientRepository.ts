@@ -1,7 +1,17 @@
 import { Client } from '../models/clientModel';
 
 export class ClientRepository {
+  private static instance: ClientRepository;
   private clients: Client[] = [];
+
+  private constructor() {}
+
+  static getInstance(): ClientRepository {
+    if (!ClientRepository.instance) {
+      ClientRepository.instance = new ClientRepository();
+    }
+    return ClientRepository.instance;
+  }
 
   async findAll(): Promise<Client[]> {
     return this.clients;

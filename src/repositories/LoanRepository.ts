@@ -1,7 +1,17 @@
 import { Loan } from '../models/loanModel';
 
 export class LoanRepository {
+  private static instance: LoanRepository;
   private loans: Loan[] = [];
+
+  private constructor() {}
+
+  static getInstance(): LoanRepository {
+    if (!LoanRepository.instance) {
+      LoanRepository.instance = new LoanRepository();
+    }
+    return LoanRepository.instance;
+  }
 
   async findAll(): Promise<Loan[]> {
     return this.loans;

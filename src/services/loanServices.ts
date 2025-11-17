@@ -4,7 +4,7 @@ import { ClientService } from './clientService';
 import { sendEmail } from '../utils/emailService';
 
 export class LoanService {
-  private repo = new LoanRepository();
+  private repo = LoanRepository.getInstance();
   private clientService = new ClientService();
 
   private assessRisk(amount: number): 'low' | 'medium' | 'high' {
@@ -24,12 +24,6 @@ export class LoanService {
   async createLoan(data: Omit<Loan, 'id' | 'riskStatus' | 'createdAt' | 'updatedAt'>): Promise<Loan> {
     const riskStatus = this.assessRisk(data.amount);
     const loan = await this.repo.create({ ...data, riskStatus } as Loan);
-    if (loan.status === 'approved') {
-      const client = await this.clientService.getClientById(loan.clientId);
-      if (client) {
-        await sendEmail(client.email, 'Loan Approved', 'Your loan has been approved.');
-      }
-    }
     return loan;
   }
 
@@ -37,15 +31,16 @@ export class LoanService {
     const existingLoan = await this.repo.findById(id);
     if (!existingLoan) return null;
 
+    const oldStatus = existingLoan.status;
     if (data.amount) data.riskStatus = this.assessRisk(data.amount);
     const loan = await this.repo.update(id, data);
-    if (loan && data.status === 'approved' && existingLoan.status !== 'approved') {
+    if (loan && data.status === 'approved' && oldStatus !== 'approved') {
       const client = await this.clientService.getClientById(loan.clientId);
       if (client) {
         await sendEmail(client.email, 'Loan Approved', 'Your loan has been approved.');
       }
     }
-    if (loan && data.status === 'rejected' && existingLoan.status !== 'rejected') {
+    if (loan && data.status === 'rejected' && oldStatus !== 'rejected') {
       const client = await this.clientService.getClientById(loan.clientId);
       if (client) {
         await sendEmail(client.email, 'Loan Rejected', 'We regret to inform you that your loan application has been rejected.');
