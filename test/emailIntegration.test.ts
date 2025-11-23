@@ -3,10 +3,23 @@ import { jest } from '@jest/globals';
 jest.mock('../src/utils/emailService');
 
 import request from 'supertest';
+import jwt from 'jsonwebtoken';
 import app from '../src/app';
 import { sendEmail } from '../src/utils/emailService';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_here';
+
+function generateToken(userId: string, role: string) {
+  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: '1h' });
+}
+
 describe('Email Integration', () => {
+  let adminToken: string;
+
+  beforeAll(() => {
+    adminToken = generateToken('adminUserId', 'admin');
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -16,6 +29,7 @@ describe('Email Integration', () => {
 
     await request(app)
       .post('/api/clients')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Test User',
         email: 'test@example.com',
@@ -36,6 +50,7 @@ describe('Email Integration', () => {
     // Create a client first
     const clientRes = await request(app)
       .post('/api/clients')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Test User',
         email: 'test@example.com',
@@ -47,6 +62,7 @@ describe('Email Integration', () => {
     // Create a loan
     const loanRes = await request(app)
       .post('/api/loans')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         clientId,
         amount: 10000,
@@ -59,6 +75,7 @@ describe('Email Integration', () => {
     // Update loan to approved
     await request(app)
       .put(`/api/loans/${loanId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({ status: 'approved' });
 
     // Check if email was sent (should be the 2nd call: 1 for client creation, 2 for update to approved)
@@ -75,6 +92,7 @@ describe('Email Integration', () => {
     // Create a client first
     const clientRes = await request(app)
       .post('/api/clients')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Test User',
         email: 'test@example.com',
@@ -86,6 +104,7 @@ describe('Email Integration', () => {
     // Create a loan
     const loanRes = await request(app)
       .post('/api/loans')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         clientId,
         amount: 10000,
@@ -98,6 +117,7 @@ describe('Email Integration', () => {
     // Update loan to rejected
     await request(app)
       .put(`/api/loans/${loanId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({ status: 'rejected' });
 
     // Check if email was sent (should be the 2nd call: 1 for client creation, 2 for update to rejected)

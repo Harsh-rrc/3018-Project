@@ -1,12 +1,25 @@
 import request from 'supertest';
+import jwt from 'jsonwebtoken';
 import app from '../src/app';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_here';
+
+function generateToken(userId: string, role: string) {
+  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: '1h' });
+}
 
 describe('Client API', () => {
   let createdClientId: string;
+  let adminToken: string;
+
+  beforeAll(() => {
+    adminToken = generateToken('adminUserId', 'admin');
+  });
 
   it('should create a new client', async () => {
     const response = await request(app)
       .post('/api/clients')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'John Doe',
         email: 'john@example.com',
@@ -33,13 +46,16 @@ describe('Client API', () => {
   it('should update a client', async () => {
     const response = await request(app)
       .put(`/api/clients/${createdClientId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({ address: '456 New Ave' });
     expect(response.status).toBe(200);
     expect(response.body.address).toBe('456 New Ave');
   });
 
   it('should delete a client', async () => {
-    const response = await request(app).delete(`/api/clients/${createdClientId}`);
+    const response = await request(app)
+      .delete(`/api/clients/${createdClientId}`)
+      .set('Authorization', `Bearer ${adminToken}`);
     expect(response.status).toBe(204);
   });
 });

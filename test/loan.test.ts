@@ -16,9 +16,14 @@ describe('Loan API', () => {
   let userToken: string;
 
   beforeAll(async () => {
-    // Setup test client
+    // Generate tokens
+    adminToken = generateToken('adminUserId', 'admin');
+    userToken = generateToken('normalUserId', 'user'); // user role without permissions
+
+    // Setup test client with auth header
     const clientRes = await request(app)
       .post('/api/clients')
+      .set('Authorization', `Bearer ${adminToken}`)
       .send({
         name: 'Jane Smith',
         email: 'jane@example.com',
@@ -26,10 +31,6 @@ describe('Loan API', () => {
         address: '22 Elm Street'
       });
     clientId = clientRes.body.id;
-
-    // Generate tokens
-    adminToken = generateToken('adminUserId', 'admin');
-    userToken = generateToken('normalUserId', 'user'); // user role without permissions
   });
 
   it('should create a new loan', async () => {

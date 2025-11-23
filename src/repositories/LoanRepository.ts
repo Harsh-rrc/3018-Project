@@ -6,6 +6,10 @@ export class LoanRepository {
 
   private constructor() {}
 
+  clear() {
+    this.loans = [];
+  }
+
   static getInstance(): LoanRepository {
     if (!LoanRepository.instance) {
       LoanRepository.instance = new LoanRepository();

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -104,21 +104,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ClientRepository } from '../repositories/clientRepository';
@@ -136,18 +136,18 @@ export class ClientService {
     return this.repo.findById(id);
   }
 &nbsp;
-  async <span class="fstat-no" title="function not covered" >createClient(</span>data: Omit&lt;Client, 'id' | 'createdAt' | 'updatedAt'&gt;): Promise&lt;Client&gt; {
-    const client = <span class="cstat-no" title="statement not covered" >await this.repo.create(data);</span>
-<span class="cstat-no" title="statement not covered" >    await sendEmail(client.email, 'Welcome to Our Loan Service', 'Thank you for registering with us. We look forward to serving your loan needs.');</span>
-<span class="cstat-no" title="statement not covered" >    return client;</span>
+  async createClient(data: Omit&lt;Client, 'id' | 'createdAt' | 'updatedAt'&gt;): Promise&lt;Client&gt; {
+    const client = await this.repo.create(data);
+    await sendEmail(client.email, 'Welcome to Our Loan Service', 'Thank you for registering with us. We look forward to serving your loan needs.');
+    return client;
   }
 &nbsp;
-  async <span class="fstat-no" title="function not covered" >updateClient(</span>id: string, data: Partial&lt;Client&gt;): Promise&lt;Client | null&gt; {
-<span class="cstat-no" title="statement not covered" >    return this.repo.update(id, data);</span>
+  async updateClient(id: string, data: Partial&lt;Client&gt;): Promise&lt;Client | null&gt; {
+    return this.repo.update(id, data);
   }
 &nbsp;
-  async <span class="fstat-no" title="function not covered" >deleteClient(</span>id: string): Promise&lt;boolean&gt; {
-<span class="cstat-no" title="statement not covered" >    return this.repo.delete(id);</span>
+  async deleteClient(id: string): Promise&lt;boolean&gt; {
+    return this.repo.delete(id);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -157,7 +157,7 @@ export class ClientService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-23T17:01:51.795Z
+                at 2025-11-23T18:42:21.264Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -13,6 +13,10 @@ export class ClientRepository {
     return ClientRepository.instance;
   }
 
+  clear() {
+    this.clients = [];
+  }
+
   async findAll(): Promise<Client[]> {
     return this.clients;
   }
