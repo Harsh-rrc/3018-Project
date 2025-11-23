@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { loanController } from '../controllers/loanController';
 import { validateRequest } from '../middleware/validation';
 import { createLoanSchema, updateLoanSchema } from '../Validations/loanValidation';
+import { authMiddleware, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 
@@ -45,7 +46,7 @@ const router = Router();
  *                 page:
  *                   type: integer
  */
-router.get('/', loanController.getAllLoans);
+router.get('/', authMiddleware, loanController.getAllLoans);
 
 /**
  * @openapi
