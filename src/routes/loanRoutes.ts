@@ -10,46 +10,66 @@ const router = Router();
  * @openapi
  * /api/loans:
  *   get:
- *     security:
- *       - bearerAuth: []
- *     summary: Retrieve a list of loans with optional filtering and sorting
+ *     summary: Retrieve a list of loans with optional filtering
  *     tags: [Loans]
  *     parameters:
+ *       - name: limit
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
+ *         description: Maximum number of loans to return
+ *       - name: page
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number for pagination
+ *       - name: sortBy
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [amount, interestRate, duration, status, createdAt]
+ *         description: Field to sort loans by
+ *       - name: sortOrder
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: asc
+ *         description: Sort order (ascending or descending)
  *       - name: status
  *         in: query
+ *         required: false
  *         schema:
  *           type: string
  *           enum: [pending, approved, rejected, active, completed]
  *         description: Filter loans by status
- *       - name: riskStatus
- *         in: query
- *         schema:
- *           type: string
- *           enum: [low, medium, high]
- *         description: Filter loans by risk status
- *       - name: sortField
- *         in: query
- *         schema:
- *           type: string
- *           enum: [amount, interestRate, duration, status, riskStatus]
- *         description: Field name to sort by
- *       - name: sortOrder
- *         in: query
- *         schema:
- *           type: string
- *           enum: [asc, desc]
- *         description: Sort order ascending or descending
  *     responses:
  *       '200':
  *         description: Successfully retrieved loans
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Loan'
+ *               type: object
+ *               properties:
+ *                 loans:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Loan'
+ *                 total:
+ *                   type: integer
+ *                 page:
+ *                   type: integer
  */
-router.get('/', authMiddleware, loanController.getAllLoans);
+router.get('/', loanController.getAllLoans);
 
 /**
  * @openapi
@@ -137,7 +157,7 @@ router.get('/:id', loanController.getLoanById);
  *       '404':
  *         description: Client not found
  */
-router.post('/', validateRequest(createLoanSchema), loanController.createLoan);
+router.post('/', authMiddleware, authorizeRole(['admin', 'manager']), validateRequest(createLoanSchema), loanController.createLoan);
 
 /**
  * @openapi
@@ -194,7 +214,7 @@ router.post('/', validateRequest(createLoanSchema), loanController.createLoan);
  *       '404':
  *         description: Loan not found
  */
-router.put('/:id', validateRequest(updateLoanSchema), loanController.updateLoan);
+router.put('/:id', authMiddleware, authorizeRole(['admin', 'manager']), validateRequest(updateLoanSchema), loanController.updateLoan);
 
 /**
  * @openapi
@@ -215,6 +235,6 @@ router.put('/:id', validateRequest(updateLoanSchema), loanController.updateLoan)
  *       '404':
  *         description: Loan not found
  */
-router.delete('/:id', loanController.deleteLoan);
+router.delete('/:id', authMiddleware, authorizeRole(['admin']), loanController.deleteLoan);
 
 export default router;

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { clientController } from '../controllers/clientController';
 import { validateRequest } from '../middleware/validation';
 import { createClientSchema, updateClientSchema } from '../Validations/clientValidation';
+import { authMiddleware, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 
@@ -128,7 +129,7 @@ router.get('/:id', clientController.getClientById);
  *       '409':
  *         description: Client with this email already exists
  */
-router.post('/', validateRequest(createClientSchema), clientController.createClient);
+router.post('/', authMiddleware, authorizeRole(['admin', 'manager']), validateRequest(createClientSchema), clientController.createClient);
 
 /**
  * @openapi
@@ -185,7 +186,7 @@ router.post('/', validateRequest(createClientSchema), clientController.createCli
  *       '404':
  *         description: Client not found
  */
-router.put('/:id', validateRequest(updateClientSchema), clientController.updateClient);
+router.put('/:id', authMiddleware, authorizeRole(['admin', 'manager']), validateRequest(updateClientSchema), clientController.updateClient);
 
 /**
  * @openapi
@@ -206,6 +207,6 @@ router.put('/:id', validateRequest(updateClientSchema), clientController.updateC
  *       '404':
  *         description: Client not found
  */
-router.delete('/:id', clientController.deleteClient);
+router.delete('/:id', authMiddleware, authorizeRole(['admin']), clientController.deleteClient);
 
 export default router;
