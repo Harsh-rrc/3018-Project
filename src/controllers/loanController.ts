@@ -5,7 +5,17 @@ const service = new LoanService();
 
 export const loanController = {
   getAllLoans(req: Request, res: Response) {
-    service.getAllLoans()
+    const filters = {
+      status: req.query.status as string | undefined,
+      riskStatus: req.query.riskStatus as string | undefined
+    };
+
+    const sortField = req.query.sortField as string | undefined;
+    const sortOrder: 'asc' | 'desc' = req.query.sortOrder === 'desc' ? 'desc' : 'asc';
+
+    const sort = sortField ? { field: sortField, order: sortOrder } : undefined;
+
+    service.getAllLoans(filters, sort)
       .then(loans => res.json(loans))
       .catch(() => res.status(500).json({ error: 'Failed to fetch loans' }));
   },
