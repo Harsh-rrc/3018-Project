@@ -10,41 +10,44 @@ const router = Router();
  * @openapi
  * /api/loans:
  *   get:
- *     summary: Retrieve a list of loans with optional filtering
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Retrieve a list of loans with optional filtering and sorting
  *     tags: [Loans]
  *     parameters:
- *       - name: limit
- *         in: query
- *         required: false
- *         schema:
- *           type: integer
- *           minimum: 1
- *           maximum: 100
- *           default: 10
- *         description: Maximum number of loans to return
  *       - name: status
  *         in: query
- *         required: false
  *         schema:
  *           type: string
  *           enum: [pending, approved, rejected, active, completed]
  *         description: Filter loans by status
+ *       - name: riskStatus
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [low, medium, high]
+ *         description: Filter loans by risk status
+ *       - name: sortField
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [amount, interestRate, duration, status, riskStatus]
+ *         description: Field name to sort by
+ *       - name: sortOrder
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *         description: Sort order ascending or descending
  *     responses:
  *       '200':
  *         description: Successfully retrieved loans
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 loans:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Loan'
- *                 total:
- *                   type: integer
- *                 page:
- *                   type: integer
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Loan'
  */
 router.get('/', authMiddleware, loanController.getAllLoans);
 
