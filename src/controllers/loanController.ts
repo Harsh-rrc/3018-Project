@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import { LoanService } from '../services/loanServices';
 import { loanQuerySchema } from '../Validations/loanValidation';
+import { asyncHandler } from '../middleware/asyncHandler';
 
 const service = new LoanService();
 
 export const loanController = {
-  async getAllLoans(req: Request, res: Response) {
+  getAllLoans: asyncHandler(async (req: Request, res: Response) => {
     const { error, value } = loanQuerySchema.validate(req.query);
     if (error) {
-      return res.status(400).json({ error: error.details[0].message });
+      res.status(400).json({ error: error.details[0].message });
+      return;
     }
 
     const filters = {
@@ -18,50 +20,39 @@ export const loanController = {
 
     const sort = value.sortField ? { field: value.sortField, order: value.sortOrder || 'asc' } : undefined;
 
-    try {
-      const loans = await service.getAllLoans(filters, sort);
-      res.json(loans);
-    } catch {
-      res.status(500).json({ error: 'Failed to fetch loans' });
-    }
-  },
+    const loans = await service.getAllLoans(filters, sort);
+    res.json(loans);
+  }),
 
-  async getLoanById(req: Request, res: Response) {
-    try {
-      const loan = await service.getLoanById(req.params.id);
-      if (!loan) return res.status(404).json({ error: 'Loan not found' });
-      res.json(loan);
-    } catch {
-      res.status(500).json({ error: 'Failed to fetch loan' });
+  getLoanById: asyncHandler(async (req: Request, res: Response) => {
+    const loan = await service.getLoanById(req.params.id);
+    if (!loan) {
+      res.status(404).json({ error: 'Loan not found' });
+      return;
     }
-  },
+    res.json(loan);
+  }),
 
-  async createLoan(req: Request, res: Response) {
-    try {
-      const newLoan = await service.createLoan(req.body);
-      res.status(201).json(newLoan);
-    } catch {
-      res.status(400).json({ error: 'Failed to create loan' });
-    }
-  },
+  createLoan: asyncHandler(async (req: Request, res: Response) => {
+    const newLoan = await service.createLoan(req.body);
+    res.status(201).json(newLoan);
+  }),
 
-  async updateLoan(req: Request, res: Response) {
-    try {
-      const updated = await service.updateLoan(req.params.id, req.body);
-      if (!updated) return res.status(404).json({ error: 'Loan not found' });
-      res.json(updated);
-    } catch {
-      res.status(400).json({ error: 'Failed to update loan' });
+  updateLoan: asyncHandler(async (req: Request, res: Response) => {
+    const updated = await service.updateLoan(req.params.id, req.body);
+    if (!updated) {
+      res.status(404).json({ error: 'Loan not found' });
+      return;
     }
-  },
+    res.json(updated);
+  }),
 
-  async deleteLoan(req: Request, res: Response) {
-    try {
-      const deleted = await service.deleteLoan(req.params.id);
-      if (!deleted) return res.status(404).json({ error: 'Loan not found' });
-      res.status(204).send();
-    } catch {
-      res.status(500).json({ error: 'Failed to delete loan' });
+  deleteLoan: asyncHandler(async (req: Request, res: Response) => {
+    const deleted = await service.deleteLoan(req.params.id);
+    if (!deleted) {
+      res.status(404).json({ error: 'Loan not found' });
+      return;
     }
-  }
+    res.status(204).send();
+  }),
 };
