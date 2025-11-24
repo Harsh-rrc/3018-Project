@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import clientRoutes from './routes/clientRoutes';
 import loanRoutes from './routes/loanRoutes';
+import userRoutes from './routes/userRoutes';
 import errorHandler from './middleware/errorHandler';
 
 process.env.DOTENV_CONFIG_SILENT = 'true';
@@ -20,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use('/api/clients', clientRoutes);
 app.use('/api/loans', loanRoutes);
+app.use('/api/users', userRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

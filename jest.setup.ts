@@ -1,18 +1,31 @@
+process.env.DOTENV_CONFIG_SILENT = 'true'; // Suppress dotenv logs
+
 import { ClientRepository } from './src/repositories/clientRepository';
 import { LoanRepository } from './src/repositories/LoanRepository';
 
-const originalLog = console.log;
-const isDotenvLog = (msg: string) =>
-  msg.includes('[dotenv@') && msg.includes('injecting env');
+// Keep references to original console methods
+const originalConsoleInfo = console.info;
+const originalConsoleError = console.error;
 
-console.log = (...args: unknown[]) => {
-  if (typeof args[0] === 'string' && isDotenvLog(args[0])) {
-    return;
-  }
-  originalLog(...args);
-};
+// Suppress emailService logs during tests
+beforeAll(() => {
+  console.info = (...args) => {
+    if (typeof args[0] === 'string' && args[0].startsWith('[emailService]')) return;
+    originalConsoleInfo.apply(console, args);
+  };
+  console.error = (...args) => {
+    if (typeof args[0] === 'string' && args[0].startsWith('[emailService]')) return;
+    originalConsoleError.apply(console, args);
+  };
+});
 
+// Clear repositories before all tests to avoid state leak causing 404 errors
 beforeAll(() => {
   ClientRepository.getInstance().clear();
   LoanRepository.getInstance().clear();
+});
+
+afterAll(() => {
+  console.info = originalConsoleInfo;
+  console.error = originalConsoleError;
 });

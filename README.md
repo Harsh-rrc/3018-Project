@@ -12,6 +12,7 @@ This project implements a backend Loan Service API with features including clien
 - API documentation using OpenAPI (Swagger)
 - In-memory repository with test isolation
 - Jest-based tests with coverage
+- Dynamic Ethereal Email Integration for testing environment
 
 ## Setup and Running
 1. Install dependencies:
@@ -27,6 +28,12 @@ This project implements a backend Loan Service API with features including clien
    JWT_SECRET=your_jwt_secret
    NODE_ENV=development
    ```
+
+   **Note**: For automated Ethereal Email testing integration, set:
+   ```
+   EMAIL_SERVICE=ethereal
+   ```
+   and do **not** set EMAIL_USER or EMAIL_PASS. The system will generate a test Ethereal account dynamically.
 
 3. Run tests with coverage:
    ```
@@ -55,6 +62,7 @@ http://localhost:PORT/api-docs
 - Tests reset in-memory repositories for isolation
 - Email sending is mocked during tests
 - Console logs suppressed in test environment for clean output
+- Dynamic Ethereal email accounts used automatically for testing when EMAIL_SERVICE=ethereal
 
 ## Contribution
 Follow GitHub workflow best practices for managing branches and pull requests.

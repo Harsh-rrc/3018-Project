@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88% </span>
+                <span class="strong">74% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>44/50</span>
+                <span class='fraction'>37/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.5% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>29/40</span>
+                <span class='fraction'>24/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">70% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>7/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">80.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>39/42</span>
+                <span class='fraction'>34/42</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -150,36 +150,36 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,9 +187,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -228,8 +228,8 @@ export class LoanService {
 &nbsp;
   private assessRisk(amount: number): 'low' | 'medium' | 'high' {
     if (amount &lt;= 10000) return 'low';
-    if (amount &lt;= 50000) return 'medium';
-    return 'high';
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (amount &lt;= 50000) return 'medium';
+<span class="cstat-no" title="statement not covered" >    return 'high';</span>
   }
 &nbsp;
   async getAllLoans(filters?: { status?: string; riskStatus?: string }, sort?: { field: string; order: 'asc' | 'desc' }): Promise&lt;Loan[]&gt; {
@@ -238,7 +238,7 @@ export class LoanService {
     // Filtering
     <span class="missing-if-branch" title="else path not taken" >E</span>if (filters) {
       if (filters.status) {
-        loans = loans.filter(loan =&gt; loan.status === filters.status);
+        loans = loans.filter(<span class="fstat-no" title="function not covered" >loan </span>=&gt; <span class="cstat-no" title="statement not covered" >loan.status === filters.status)</span>;
       }
       <span class="missing-if-branch" title="if path not taken" >I</span>if (filters.riskStatus) {
 <span class="cstat-no" title="statement not covered" >        loans = loans.filter(<span class="fstat-no" title="function not covered" >loan </span>=&gt; <span class="cstat-no" title="statement not covered" >loan.riskStatus === filters.riskStatus)</span>;</span>
@@ -246,11 +246,11 @@ export class LoanService {
     }
 &nbsp;
     // Sorting
-    if (sort &amp;&amp; sort.field) {
-      loans = loans.sort((a, b) =&gt; {
-        const fieldA = (a as any)[sort.field];
-        const fieldB = (b as any)[sort.field];
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (fieldA &lt; fieldB) return sort.order === 'asc' ? <span class="branch-0 cbranch-no" title="branch not covered" >-1 </span>: 1;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (sort &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >sort.field)</span> {
+<span class="cstat-no" title="statement not covered" >      loans = loans.sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; {</span>
+        const fieldA = (<span class="cstat-no" title="statement not covered" >a as any)[sort.field];</span>
+        const fieldB = (<span class="cstat-no" title="statement not covered" >b as any)[sort.field];</span>
+<span class="cstat-no" title="statement not covered" >        if (fieldA &lt; fieldB) <span class="cstat-no" title="statement not covered" >return sort.order === 'asc' ? -1 : 1;</span></span>
 <span class="cstat-no" title="statement not covered" >        if (fieldA &gt; fieldB) <span class="cstat-no" title="statement not covered" >return sort.order === 'asc' ? 1 : -1;</span></span>
 <span class="cstat-no" title="statement not covered" >        return 0;</span>
       });
@@ -301,7 +301,7 @@ export class LoanService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-23T18:42:21.264Z
+                at 2025-11-24T22:46:13.413Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

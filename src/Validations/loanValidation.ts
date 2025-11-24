@@ -20,6 +20,6 @@ export const updateLoanSchema = Joi.object({
 export const loanQuerySchema = Joi.object({
   status: Joi.string().valid('pending', 'approved', 'rejected', 'active', 'completed'),
   riskStatus: Joi.string().valid('low', 'medium', 'high'),
-  sortField: Joi.string().valid('amount', 'interestRate', 'duration', 'status', 'riskStatus'),
+  sortBy: Joi.string().valid('amount', 'interestRate', 'duration', 'status', 'riskStatus'),
   sortOrder: Joi.string().valid('asc', 'desc'),
 });
