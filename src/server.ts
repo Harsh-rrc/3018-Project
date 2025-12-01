@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import clientRoutes from './routes/clientRoutes';
 import loanRoutes from './routes/loanRoutes';
+import userRoutes from './routes/userRoutes';
 import errorHandler from './middleware/errorHandler';
 import { setupSwagger } from './docs/swagger';
 
@@ -16,6 +17,7 @@ setupSwagger(app);
 // --- Routes ---
 app.use('/api/clients', clientRoutes);
 app.use('/api/loans', loanRoutes);
+app.use('/api/users', userRoutes);
 
 // --- Root Route ---
 app.get('/', (req: Request, res: Response) => {

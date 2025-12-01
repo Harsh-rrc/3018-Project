@@ -1,6 +1,33 @@
 import { Request, Response } from 'express';
 import { asyncHandler } from '../middleware/asyncHandler';
+import { getAuth } from 'firebase-admin/auth';
+import { db } from '../config/firebase';
 import * as userService from '../services/userService';
+
+// Login endpoint - verifies Firebase token and returns user info
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  const { idToken } = req.body;
+  if (!idToken) {
+    res.status(400).json({ error: 'ID token required' });
+    return;
+  }
+
+  try {
+    const decodedToken = await getAuth().verifyIdToken(idToken);
+    const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+    const userData = userDoc.data();
+
+    res.status(200).json({
+      user: {
+        id: decodedToken.uid,
+        email: decodedToken.email,
+        role: userData?.role || 'user'
+      }
+    });
+  } catch (error) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
 
 // Get all users
 export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {

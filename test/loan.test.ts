@@ -1,12 +1,5 @@
 import request from "supertest";
-import jwt from "jsonwebtoken";
 import app from "../src/app";
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_here";
-
-function generateToken(userId: string, role: string) {
-  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: "1h" });
-}
 
 describe("Loan API", () => {
   let adminToken: string;
@@ -14,8 +7,8 @@ describe("Loan API", () => {
   let createdLoanId: string;
 
   beforeAll(() => {
-    adminToken = generateToken("adminUserId", "admin");
-    userToken = generateToken("userUserId", "user");
+    adminToken = "mock.firebase.admin.token";
+    userToken = "mock.firebase.user.token";
   });
 
   it("should create a new loan", async () => {
@@ -80,7 +73,8 @@ describe("Loan API", () => {
 
   it("should get a loan by ID", async () => {
     const response = await request(app)
-      .get(`/api/loans/${createdLoanId}`);
+      .get(`/api/loans/${createdLoanId}`)
+      .set("Authorization", `Bearer ${adminToken}`);
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(createdLoanId);
   });

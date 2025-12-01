@@ -4,6 +4,7 @@
     "main": "index.js",
     "scripts": {
         "test": "jest --coverage --verbose",
+        "test:email": "ts-node test/sendRealEmail.ts",
         "generate-docs": "swagger-jsdoc -d swagger-config.json src/routes/*.ts -o swagger.json",
         "dev": "ts-node src/server.ts",
         "build": "tsc",

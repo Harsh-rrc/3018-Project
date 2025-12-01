@@ -1,26 +1,16 @@
 import request from "supertest";
-import jwt from "jsonwebtoken";
 import app from "../src/app";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_here";
-
-function generateToken(userId: string, role: string) {
-  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: "1h" });
-}
+// Mock Firebase tokens for testing
+const adminToken = "mock.firebase.admin.token";
+const userToken = "mock.firebase.user.token";
 
 describe("Loan API - Filtering, Sorting and Auth", () => {
-  let adminToken: string;
-  let userToken: string;
   let loanId: string;
-
-  beforeAll(() => {
-    adminToken = generateToken("adminUserId", "admin");
-    userToken = generateToken("userUserId", "user");
-  });
 
   test("Should require authentication on protected routes", async () => {
     const res = await request(app).get("/api/loans");
-    expect(res.statusCode).toBe(200); // GET /api/loans is public
+    expect(res.statusCode).toBe(401);
   });
 
   test("Should allow admin to create a loan", async () => {
@@ -68,13 +58,13 @@ describe("Loan API - Filtering, Sorting and Auth", () => {
   });
 
   test("Should filter loans by status", async () => {
-    const res = await request(app).get("/api/loans?status=pending");
+    const res = await request(app).get("/api/loans?status=pending").set("Authorization", `Bearer ${adminToken}`);
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
 
   test("Should sort loans by amount descending", async () => {
-    const res = await request(app).get("/api/loans?sortBy=amount&sortOrder=desc");
+    const res = await request(app).get("/api/loans?sortBy=amount&sortOrder=desc").set("Authorization", `Bearer ${adminToken}`);
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });

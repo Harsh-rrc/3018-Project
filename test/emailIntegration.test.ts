@@ -7,21 +7,12 @@ jest.mock("../src/utils/emailService", () => ({
 }));
 
 import request from "supertest";
-import jwt from "jsonwebtoken";
 import app from "../src/app";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_here";
-
-function generateToken(userId: string, role: string) {
-  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: "1h" });
-}
+// Mock Firebase token for testing
+const adminToken = "mock.firebase.admin.token";
 
 describe("Email Integration", () => {
-  let adminToken: string;
-
-  beforeAll(() => {
-    adminToken = generateToken("adminUserId", "admin");
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();

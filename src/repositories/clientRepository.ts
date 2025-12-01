@@ -1,52 +1,43 @@
 import { Client } from '../models/clientModel';
+import { db } from '../config/firebase';
 
-export class ClientRepository {
-  private static instance: ClientRepository;
-  private clients: Client[] = [];
+export async function getAllClients(): Promise<Client[]> {
+  const snapshot = await db.collection('clients').get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
+}
 
-  private constructor() {}
+export async function getClientById(id: string): Promise<Client | null> {
+  const doc = await db.collection('clients').doc(id).get();
+  return doc.exists ? ({ id: doc.id, ...doc.data() } as Client) : null;
+}
 
-  static getInstance(): ClientRepository {
-    if (!ClientRepository.instance) {
-      ClientRepository.instance = new ClientRepository();
-    }
-    return ClientRepository.instance;
-  }
+export async function createClient(clientData: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Promise<Client> {
+  const newClient = {
+    ...clientData,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  const docRef = await db.collection('clients').add(newClient);
+  return { id: docRef.id, ...newClient };
+}
 
-  clear() {
-    this.clients = [];
-  }
+export async function updateClient(id: string, clientData: Partial<Client>): Promise<Client | null> {
+  const updateData = { ...clientData, updatedAt: new Date() };
+  await db.collection('clients').doc(id).update(updateData);
+  const updatedDoc = await db.collection('clients').doc(id).get();
+  return updatedDoc.exists ? ({ id: updatedDoc.id, ...updatedDoc.data() } as Client) : null;
+}
 
-  async findAll(): Promise<Client[]> {
-    return this.clients;
-  }
-
-  async findById(id: string): Promise<Client | null> {
-    return this.clients.find(c => c.id === id) || null;
-  }
-
-  async create(data: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Promise<Client> {
-    const newClient: Client = {
-      ...data,
-      id: Date.now().toString(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.clients.push(newClient);
-    return newClient;
-  }
-
-  async update(id: string, data: Partial<Client>): Promise<Client | null> {
-    const client = await this.findById(id);
-    if (!client) return null;
-    Object.assign(client, data, { updatedAt: new Date() });
-    return client;
-  }
-
-  async delete(id: string): Promise<boolean> {
-    const index = this.clients.findIndex(c => c.id === id);
-    if (index === -1) return false;
-    this.clients.splice(index, 1);
+export async function deleteClient(id: string): Promise<boolean> {
+  try {
+    await db.collection('clients').doc(id).delete();
     return true;
+  } catch {
+    return false;
   }
+}
+
+export async function getClientsByName(name: string): Promise<Client[]> {
+  const snapshot = await db.collection('clients').where('name', '>=', name).where('name', '<=', name + '\uf8ff').get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Client));
 }

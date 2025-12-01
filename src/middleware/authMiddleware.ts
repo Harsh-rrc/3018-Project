@@ -1,15 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import { getAuth } from 'firebase-admin/auth';
+import { db } from '../config/firebase';
 
-const secretKey = process.env.JWT_SECRET || 'your_jwt_secret_here';
-
-interface JwtPayload {
+interface FirebasePayload {
   userId: string;
   role: string;
+  email: string;
 }
 
-// Authentication middleware
-export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+// Authentication middleware using Firebase
+export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Authorization token missing or malformed' });
@@ -19,8 +19,15 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   const token = authHeader.split(' ')[1];
 
   try {
-    const payload = jwt.verify(token, secretKey) as JwtPayload;
-    (req as any).user = payload;
+    const decodedToken = await getAuth().verifyIdToken(token);
+    const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+    const userData = userDoc.data();
+
+    (req as any).user = {
+      userId: decodedToken.uid,
+      email: decodedToken.email,
+      role: userData?.role || 'user',
+    };
     next();
   } catch (error) {
     res.status(401).json({ error: 'Invalid or expired token' });
@@ -31,7 +38,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 // Authorization middleware with multiple roles support
 export function authorizeRole(roles: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const user = (req as any).user as JwtPayload;
+    const user = (req as any).user as FirebasePayload;
     if (!user || !roles.includes(user.role)) {
       res.status(403).json({ error: 'Forbidden: insufficient rights' });
       return;

@@ -1,29 +1,35 @@
-import { ClientRepository } from '../repositories/clientRepository';
+import * as clientRepository from '../repositories/clientRepository';
 import { Client } from '../models/clientModel';
 import { sendEmail } from '../utils/emailService';
 
 export class ClientService {
-  private repo = ClientRepository.getInstance();
-
   async getAllClients(): Promise<Client[]> {
-    return this.repo.findAll();
+    return clientRepository.getAllClients();
   }
 
   async getClientById(id: string): Promise<Client | null> {
-    return this.repo.findById(id);
+    return clientRepository.getClientById(id);
   }
 
-  async createClient(data: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Promise<Client> {
-    const client = await this.repo.create(data);
-    await sendEmail(client.email, 'Welcome to Our Loan Service', 'Thank you for registering with us. We look forward to serving your loan needs.');
+  async createClient(clientData: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Promise<Client> {
+    const client = await clientRepository.createClient(clientData);
+    try {
+      await sendEmail(client.email, 'Welcome to Our Loan Service', 'Thank you for registering with us. We look forward to serving your loan needs.');
+    } catch (emailError) {
+      console.warn('Failed to send welcome email, but client was created successfully:', emailError);
+    }
     return client;
   }
 
-  async updateClient(id: string, data: Partial<Client>): Promise<Client | null> {
-    return this.repo.update(id, data);
+  async updateClient(id: string, clientData: Partial<Client>): Promise<Client | null> {
+    return clientRepository.updateClient(id, clientData);
   }
 
   async deleteClient(id: string): Promise<boolean> {
-    return this.repo.delete(id);
+    return clientRepository.deleteClient(id);
+  }
+
+  async getClientsByName(name: string): Promise<Client[]> {
+    return clientRepository.getClientsByName(name);
   }
 }

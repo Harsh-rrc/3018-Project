@@ -1,25 +1,16 @@
 import request from "supertest";
-import jwt from "jsonwebtoken";
 import app from "../src/app";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_here";
-
-function generateToken(userId: string, role: string) {
-  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: "1h" });
-}
+// Mock Firebase token for testing
+const mockFirebaseToken = "mock.firebase.admin.token";
 
 describe("Client API", () => {
   let createdClientId: string;
-  let adminToken: string;
-
-  beforeAll(() => {
-    adminToken = generateToken("adminUserId", "admin");
-  });
 
   it("should create a new client", async () => {
     const response = await request(app)
       .post("/api/clients")
-      .set("Authorization", `Bearer ${adminToken}`)
+      .set("Authorization", `Bearer ${mockFirebaseToken}`)
       .send({
         name: "John Doe",
         email: "john@example.com",
@@ -32,13 +23,13 @@ describe("Client API", () => {
   });
 
   it("should get all clients", async () => {
-    const response = await request(app).get("/api/clients");
+    const response = await request(app).get("/api/clients").set("Authorization", `Bearer ${mockFirebaseToken}`);
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
   });
 
   it("should get a client by ID", async () => {
-    const response = await request(app).get(`/api/clients/${createdClientId}`);
+    const response = await request(app).get(`/api/clients/${createdClientId}`).set("Authorization", `Bearer ${mockFirebaseToken}`);
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(createdClientId);
   });
@@ -46,7 +37,7 @@ describe("Client API", () => {
   it("should update a client", async () => {
     const response = await request(app)
       .put(`/api/clients/${createdClientId}`)
-      .set("Authorization", `Bearer ${adminToken}`)
+      .set("Authorization", `Bearer ${mockFirebaseToken}`)
       .send({ address: "456 New Ave" });
     expect(response.status).toBe(200);
     expect(response.body.address).toBe("456 New Ave");
@@ -55,7 +46,7 @@ describe("Client API", () => {
   it("should delete a client", async () => {
     const response = await request(app)
       .delete(`/api/clients/${createdClientId}`)
-      .set("Authorization", `Bearer ${adminToken}`);
+      .set("Authorization", `Bearer ${mockFirebaseToken}`);
     expect(response.status).toBe(204);
   });
 });

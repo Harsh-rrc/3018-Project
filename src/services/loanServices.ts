@@ -1,20 +1,13 @@
-import { LoanRepository } from '../repositories/LoanRepository';
+import * as loanRepository from '../repositories/LoanRepository';
 import { Loan } from '../models/loanModel';
 import { ClientService } from './clientService';
 import { sendEmail } from '../utils/emailService';
 
 export class LoanService {
-  private repo = LoanRepository.getInstance();
   private clientService = new ClientService();
 
-  private assessRisk(amount: number): 'low' | 'medium' | 'high' {
-    if (amount <= 10000) return 'low';
-    if (amount <= 50000) return 'medium';
-    return 'high';
-  }
-
   async getAllLoans(filters?: { status?: string; riskStatus?: string }, sort?: { field: string; order: 'asc' | 'desc' }): Promise<Loan[]> {
-    let loans = await this.repo.findAll();
+    let loans = await loanRepository.getAllLoans();
 
     // Filtering
     if (filters) {
@@ -41,22 +34,20 @@ export class LoanService {
   }
 
   async getLoanById(id: string): Promise<Loan | null> {
-    return this.repo.findById(id);
+    return loanRepository.getLoanById(id);
   }
 
   async createLoan(data: Omit<Loan, 'id' | 'riskStatus' | 'createdAt' | 'updatedAt'>): Promise<Loan> {
-    const riskStatus = this.assessRisk(data.amount);
-    const loan = await this.repo.create({ ...data, riskStatus } as Loan);
+    const loan = await loanRepository.createLoan(data);
     return loan;
   }
 
   async updateLoan(id: string, data: Partial<Loan>): Promise<Loan | null> {
-    const existingLoan = await this.repo.findById(id);
+    const existingLoan = await loanRepository.getLoanById(id);
     if (!existingLoan) return null;
 
     const oldStatus = existingLoan.status;
-    if (data.amount) data.riskStatus = this.assessRisk(data.amount);
-    const loan = await this.repo.update(id, data);
+    const loan = await loanRepository.updateLoan(id, data);
     if (loan && data.status === 'approved' && oldStatus !== 'approved') {
       const client = await this.clientService.getClientById(loan.clientId);
       if (client) {
@@ -73,6 +64,6 @@ export class LoanService {
   }
 
   async deleteLoan(id: string): Promise<boolean> {
-    return this.repo.delete(id);
+    return loanRepository.deleteLoan(id);
   }
 }

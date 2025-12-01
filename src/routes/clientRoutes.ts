@@ -45,7 +45,7 @@ const router = Router();
  *                 page:
  *                   type: integer
  */
-router.get('/', clientController.getAllClients);
+router.get('/', authMiddleware, clientController.getAllClients);
 
 /**
  * @openapi
@@ -74,7 +74,7 @@ router.get('/', clientController.getAllClients);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/:id', clientController.getClientById);
+router.get('/:id', authMiddleware, clientController.getClientById);
 
 /**
  * @openapi
@@ -129,7 +129,7 @@ router.get('/:id', clientController.getClientById);
  *       '409':
  *         description: Client with this email already exists
  */
-router.post('/', authMiddleware, authorizeRole(['admin', 'manager']), validateRequest(createClientSchema), clientController.createClient);
+router.post('/', authMiddleware, authorizeRole(['admin', 'manager', 'user']), validateRequest(createClientSchema), clientController.createClient);
 
 /**
  * @openapi

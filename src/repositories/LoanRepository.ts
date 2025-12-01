@@ -1,53 +1,46 @@
 import { Loan } from '../models/loanModel';
+import { db } from '../config/firebase';
 
-export class LoanRepository {
-  private static instance: LoanRepository;
-  private loans: Loan[] = [];
+export async function getAllLoans(): Promise<Loan[]> {
+  const snapshot = await db.collection('loans').get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Loan));
+}
 
-  private constructor() {}
+export async function getLoanById(id: string): Promise<Loan | null> {
+  const doc = await db.collection('loans').doc(id).get();
+  return doc.exists ? ({ id: doc.id, ...doc.data() } as Loan) : null;
+}
 
-  clear() {
-    this.loans = [];
-  }
+export async function createLoan(loanData: Omit<Loan, 'id' | 'createdAt' | 'updatedAt' | 'riskStatus'>): Promise<Loan> {
+  const riskStatus = assessRisk(loanData.amount);
+  const newLoan = {
+    ...loanData,
+    riskStatus,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  const docRef = await db.collection('loans').add(newLoan);
+  return { id: docRef.id, ...newLoan };
+}
 
-  static getInstance(): LoanRepository {
-    if (!LoanRepository.instance) {
-      LoanRepository.instance = new LoanRepository();
-    }
-    return LoanRepository.instance;
-  }
+export async function updateLoan(id: string, loanData: Partial<Loan>): Promise<Loan | null> {
+  const updateData = { ...loanData, updatedAt: new Date() };
+  await db.collection('loans').doc(id).update(updateData);
+  const updatedDoc = await db.collection('loans').doc(id).get();
+  return updatedDoc.exists ? ({ id: updatedDoc.id, ...updatedDoc.data() } as Loan) : null;
+}
 
-  async findAll(): Promise<Loan[]> {
-    return this.loans;
-  }
-
-  async findById(id: string): Promise<Loan | null> {
-    return this.loans.find(l => l.id === id) || null;
-  }
-
-  async create(data: Omit<Loan, 'id' | 'createdAt' | 'updatedAt' | 'riskStatus'>): Promise<Loan> {
-    const newLoan: Loan = {
-      ...data,
-      id: Date.now().toString(),
-      riskStatus: 'low',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.loans.push(newLoan);
-    return newLoan;
-  }
-
-  async update(id: string, data: Partial<Loan>): Promise<Loan | null> {
-    const loan = await this.findById(id);
-    if (!loan) return null;
-    Object.assign(loan, data, { updatedAt: new Date() });
-    return loan;
-  }
-
-  async delete(id: string): Promise<boolean> {
-    const index = this.loans.findIndex(l => l.id === id);
-    if (index === -1) return false;
-    this.loans.splice(index, 1);
+export async function deleteLoan(id: string): Promise<boolean> {
+  try {
+    await db.collection('loans').doc(id).delete();
     return true;
+  } catch {
+    return false;
   }
+}
+
+function assessRisk(amount: number): 'low' | 'medium' | 'high' {
+  if (amount <= 10000) return 'low';
+  if (amount <= 50000) return 'medium';
+  return 'high';
 }

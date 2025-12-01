@@ -12,7 +12,27 @@ This project implements a backend Loan Service API with features including clien
 - API documentation using OpenAPI (Swagger)
 - In-memory repository with test isolation
 - Jest-based tests with coverage
-- Dynamic Ethereal Email Integration for testing environment
+- Real email integration with Gmail SMTP
+
+## Authentication
+
+The API uses Firebase authentication with role-based access control:
+
+### Default Users
+- **Admin**: `admin@example.com` / `admin123`
+- **Manager**: `manager@example.com` / `manager123`
+- **User**: `user@example.com` / `user123`
+
+### Login
+```bash
+POST /api/users/login
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+```
+
+Use the returned token in the Authorization header: `Bearer <token>`
 
 ## Setup and Running
 1. Install dependencies:
@@ -25,15 +45,14 @@ This project implements a backend Loan Service API with features including clien
    EMAIL_USER=your_email@example.com
    EMAIL_PASS=your_email_password
    EMAIL_SERVICE=gmail
-   JWT_SECRET=your_jwt_secret
    NODE_ENV=development
    ```
 
-   **Note**: For automated Ethereal Email testing integration, set:
+   **Note**: For automated Real Email testing integration, set:
    ```
-   EMAIL_SERVICE=ethereal
+   EMAIL_SERVICE=Real email
    ```
-   and do **not** set EMAIL_USER or EMAIL_PASS. The system will generate a test Ethereal account dynamically.
+   and do **not** set EMAIL_USER or EMAIL_PASS.
 
 3. Run tests with coverage:
    ```
@@ -42,7 +61,7 @@ This project implements a backend Loan Service API with features including clien
 
 4. Start the server locally:
    ```
-   npm start
+   npm run dev
    ```
 
 ## API Documentation
@@ -66,7 +85,3 @@ http://localhost:PORT/api-docs
 
 ## Contribution
 Follow GitHub workflow best practices for managing branches and pull requests.
-
----
-
-For any issues or contributions, please open an issue or submit a pull request.

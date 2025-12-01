@@ -69,7 +69,7 @@ const router = Router();
  *                 page:
  *                   type: integer
  */
-router.get('/', loanController.getAllLoans);
+router.get('/', authMiddleware, loanController.getAllLoans);
 
 /**
  * @openapi
@@ -98,7 +98,7 @@ router.get('/', loanController.getAllLoans);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/:id', loanController.getLoanById);
+router.get('/:id', authMiddleware, loanController.getLoanById);
 
 /**
  * @openapi
@@ -157,7 +157,6 @@ router.get('/:id', loanController.getLoanById);
  *       '404':
  *         description: Client not found
  */
-router.post('/', authMiddleware, authorizeRole(['admin', 'manager']), validateRequest(createLoanSchema), loanController.createLoan);
 
 /**
  * @openapi
